@@ -1,0 +1,76 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group "me.mattstudios"
+version "1.0.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven { url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+}
+
+dependencies {
+    compileOnly "org.jetbrains:annotations:20.0.0"
+    compileOnly "org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT"
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            from components.java
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = "Server version util"
+                description = "Util for easy versioning for Bukkit"
+                url = "https://github.com/TriumphDev/server-version-util"
+
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "http://www.opensource.org/licenses/mit-license.php"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "matt"
+                        name = "Mateus Moreira"
+                    }
+                }
+
+                scm {
+                    connection = "scm:git:git://github.com/TriumphDev/server-version-util.git"
+                    developerConnection = "scm:git:ssh://github.com:TriumphDev/server-version-util.git"
+                    url = "http://github.com/TriumphDev/server-version-util"
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            credentials {
+                username repoUsername
+                password repoPassword
+            }
+
+            url = repoUrl
+        }
+    }
+
+}
